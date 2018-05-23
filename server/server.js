@@ -1,39 +1,8 @@
-var mongoose = require('mongoose');
+var express = require('express');
+var bodyParser = require('body-parser';)
 
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/TodoApp');
+var {mongoose} = require('./db/mogoose');
+var {Todo} = require('./models/todo');
+var {User} = require('./models/user');
 
-var Todo = mongoose.model('Todo', {
-    text: {
-        type: String
-    },
-    completed: {
-        type: Boolean
-    },
-    completedAt:{
-        type: Number
-    }
-});
-
-// var newTodo = new Todo({
-//     text: 'Cook dinner'
-// });
-
-// newTodo.save().then((doc) => {
-//     console.log('Saved todo', doc);
-// }, (e) =>{
-//     console.log('Unable to save to do');
-// });
-
-var newTodo = new Todo({
-    text: 'Drink some beer',
-    completed: false,
-    completedAt: 22052018
-});
-
-newTodo.save().then((doc) => {
-    console.log('Saved todo ', doc);
-}, (e) => {
-    console.log('error: ', e);
-});
 

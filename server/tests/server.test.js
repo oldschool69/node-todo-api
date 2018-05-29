@@ -147,14 +147,11 @@ describe('DELETE /todos:id', () => {
             if(err){
                 return done(err);
             }
-            console.log('***Step 1');            
             Todo.findOne({
                 _id: hexId,
                 _creator: users[1]._id
             }).then((todo) => {
-                console.log('***Step 2: ', todo);
                 expect(todo).toNotExist();
-                console.log('***Step 3');
                 done();
             }).catch((e) => done(e));
             
@@ -192,6 +189,7 @@ describe('PATCH /todos/:id', () => {
         
         request(app)
         .patch(`/todos/${id.toHexString()}`)
+        .set('x-auth', users[0].tokens[0].token)
         .send({
             text: newText,
             completed: true
@@ -212,6 +210,7 @@ describe('PATCH /todos/:id', () => {
         
         request(app)
         .patch(`/todos/${id}`)
+        .set('x-auth', users[1].tokens[0].token)
         .send({
             text,
             completed: false

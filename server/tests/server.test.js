@@ -86,7 +86,7 @@ describe('GET /todos/:id', () => {
     it('should not return todo doc created by other user', (done) => {
         request(app)
         .get(`/todos/${todos[0]._id.toHexString()}`)
-        .set('x-auth', users[0].tokens[0].token)
+        .set('x-auth', users[1].tokens[0].token)
         .expect(404)
         .end(done);
     });
@@ -147,9 +147,14 @@ describe('DELETE /todos:id', () => {
             if(err){
                 return done(err);
             }
-            
-            Todo.findById(hexId).then((todo) => {
+            console.log('***Step 1');            
+            Todo.findOne({
+                _id: hexId,
+                _creator: users[1]._id
+            }).then((todo) => {
+                console.log('***Step 2: ', todo);
                 expect(todo).toNotExist();
+                console.log('***Step 3');
                 done();
             }).catch((e) => done(e));
             
